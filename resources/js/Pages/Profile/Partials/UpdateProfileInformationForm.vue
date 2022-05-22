@@ -17,6 +17,8 @@ const props = defineProps({
 const form = useForm({
     _method: 'PUT',
     name: props.user.name,
+    web_site: props.user.web_site,
+    presentation: props.user.presentation,
     email: props.user.email,
     photo: null,
 });
@@ -79,11 +81,11 @@ const clearPhotoFileInput = () => {
 <template>
     <JetFormSection @submitted="updateProfileInformation">
         <template #title>
-            Profile Information
+            Información de perfil
         </template>
 
         <template #description>
-            Update your account's profile information and email address.
+            Actualice la información de perfil y la dirección de correo electrónico de su cuenta.
         </template>
 
         <template #form>
@@ -130,7 +132,7 @@ const clearPhotoFileInput = () => {
 
             <!-- Name -->
             <div class="col-span-6 sm:col-span-4">
-                <JetLabel for="name" value="Name" />
+                <JetLabel for="name" value="Nombre" />
                 <JetInput
                     id="name"
                     v-model="form.name"
@@ -143,7 +145,7 @@ const clearPhotoFileInput = () => {
 
             <!-- Email -->
             <div class="col-span-6 sm:col-span-4">
-                <JetLabel for="email" value="Email" />
+                <JetLabel for="email" value="Correo" />
                 <JetInput
                     id="email"
                     v-model="form.email"
@@ -172,15 +174,79 @@ const clearPhotoFileInput = () => {
                     </div>
                 </div>
             </div>
+
+            <!-- Web site -->
+            <div class="col-span-6 sm:col-span-4">
+                <JetLabel for="web_site" value="Web site" />
+                <JetInput
+                    id="web_site"
+                    v-model="form.web_site"
+                    type="text"
+                    class="mt-1 block w-full"
+                />
+                <JetInputError :message="form.errors.web_site" class="mt-2" />
+
+                <div v-if="$page.props.jetstream.hasEmailVerification && user.email_verified_at === null">
+                    <p class="text-sm mt-2">
+                        Your email address is unverified.
+
+                        <Link
+                            :href="route('verification.send')"
+                            method="post"
+                            as="button"
+                            class="underline text-gray-600 hover:text-gray-900"
+                            @click.prevent="sendEmailVerification"
+                        >
+                            Click here to re-send the verification email.
+                        </Link>
+                    </p>
+
+                    <div v-show="verificationLinkSent" class="mt-2 font-medium text-sm text-green-600">
+                        A new verification link has been sent to your email address.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Presentation -->
+            <div class="col-span-6 sm:col-span-4">
+                <JetLabel for="presentation" value="Presentación" />
+                <JetInput
+                    id="presentation"
+                    v-model="form.presentation"
+                    type="text"
+                    class="mt-1 block w-full"
+                />
+                <JetInputError :message="form.errors.presentation" class="mt-2" />
+
+                <div v-if="$page.props.jetstream.hasEmailVerification && user.email_verified_at === null">
+                    <p class="text-sm mt-2">
+                        Your email address is unverified.
+
+                        <Link
+                            :href="route('verification.send')"
+                            method="post"
+                            as="button"
+                            class="underline text-gray-600 hover:text-gray-900"
+                            @click.prevent="sendEmailVerification"
+                        >
+                            Click here to re-send the verification email.
+                        </Link>
+                    </p>
+
+                    <div v-show="verificationLinkSent" class="mt-2 font-medium text-sm text-green-600">
+                        A new verification link has been sent to your email address.
+                    </div>
+                </div>
+            </div>
         </template>
 
         <template #actions>
             <JetActionMessage :on="form.recentlySuccessful" class="mr-3">
-                Saved.
+                Actualizar.
             </JetActionMessage>
 
             <JetButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                Actualizar
             </JetButton>
         </template>
     </JetFormSection>
