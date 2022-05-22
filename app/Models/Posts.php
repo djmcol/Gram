@@ -15,4 +15,18 @@ class Posts extends Model
         'date_post',
         'user_id'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function comments(){
+        return $this->hasMany(Comments::class , 'post_id');
+    }
+
+    public function likes(){
+        return $this->hasMany(Comments::class , 'post_id');
+    }
+
+
 }

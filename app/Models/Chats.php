@@ -13,4 +13,16 @@ class Chats extends Model
         'user_sent',
         'post_recive'
     ];
+
+    public function usersend(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function userrecive(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function messages(){
+        return $this->hasMany(Messages::class , 'chat_id');
+    }
 }
