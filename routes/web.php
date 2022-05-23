@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Redirect;
@@ -31,6 +32,9 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+    // Ruta para buscar amigo
     Route::get('/search/{nick_name}', [SearchController::class , 'search'])->name('search');
+    // Rutas de las publicaciones
+    Route::post('/create-post', [PostController::class , 'createPost'])->name('create-post');
 
 });
