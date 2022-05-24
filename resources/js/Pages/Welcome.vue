@@ -8,12 +8,12 @@
 
         <div v-if="data.post.length > 0">
             <PostComponent v-for="(item , index) in data.post" :key="index"
-                           :post="item"></PostComponent>
+                           :post="item" @post="setPost(item)"></PostComponent>
         </div>
 
-        <div class="text-3x1" v-else>
-            No hay publicaciones a mostrar
-        </div>
+        <div class="text-3x1" v-else> No hay publicaciones a mostrar</div>
+
+        <ModalPost :show="data.show" :post="data.posts" @show="changeStateModalPost"></ModalPost>
 
         <Modal :show="data.showModal" @close="changeStateShowCReatePost">
             <div class="p-5">
@@ -56,21 +56,28 @@
 <script setup>
 import {Head, Link} from '@inertiajs/inertia-vue3';
 import PostComponent from '@/Components/PostComponent'
+import ModalPost from '@/Components/ModalPost'
 import Modal from '@/Jetstream/Modal'
 import {onMounted, reactive} from "vue";
 
 const data = reactive({
     showModal: false,
+    show: false,
     url: null,
     image: null,
     text: '',
     post: [],
+    posts: [],
     errors: null
 })
 
 let changeStateShowCReatePost = () => {
     console.log(data.showModal)
     data.showModal = !data.showModal
+}
+
+let changeStateModalPost = () => {
+    data.show = !data.show
 }
 
 let fileChange = (e) => {
@@ -130,7 +137,12 @@ let resetForm = () => {
     data.errors = null
 }
 
-onMounted(() =>{
+let setPost = (post) => {
+    data.show = !data.show
+    data.posts = post
+}
+
+onMounted(() => {
     getPosts()
 })
 
