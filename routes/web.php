@@ -36,5 +36,7 @@ Route::middleware([
     Route::get('/search/{nick_name}', [SearchController::class , 'search'])->name('search');
     // Rutas de las publicaciones
     Route::post('/create-post', [PostController::class , 'createPost'])->name('create-post');
+    // Listar publicaciones
+    Route::get('/list-post', [PostController::class , 'getPosts'])->name('list-post');
 
 });

@@ -5,7 +5,15 @@
             class="w-full mb-5 text-center bg-blue-500 rounded text-white py-2 outline-none focus:outline-none hover:bg-blue-600">
             Agregar publicación
         </button>
-        <PostComponent></PostComponent>
+
+        <div v-if="data.post.length > 0">
+            <PostComponent v-for="(item , index) in data.post" :key="index"
+                           :post="item"></PostComponent>
+        </div>
+
+        <div class="text-3x1" v-else>
+            No hay publicaciones a mostrar
+        </div>
 
         <Modal :show="data.showModal" @close="changeStateShowCReatePost">
             <div class="p-5">
@@ -49,7 +57,7 @@
 import {Head, Link} from '@inertiajs/inertia-vue3';
 import PostComponent from '@/Components/PostComponent'
 import Modal from '@/Jetstream/Modal'
-import {reactive} from "vue";
+import {onMounted, reactive} from "vue";
 
 const data = reactive({
     showModal: false,
@@ -103,6 +111,17 @@ let createPost = async () => {
 
 }
 
+let getPosts = async () => {
+    try {
+        const URL = `/list-post`
+        const RPT = (await axios.get(URL)).data
+        data.post = RPT
+    } catch (e) {
+
+    }
+
+}
+
 let resetForm = () => {
     data.showModal = false
     data.url = null
@@ -110,6 +129,10 @@ let resetForm = () => {
     data.text = ''
     data.errors = null
 }
+
+onMounted(() =>{
+    getPosts()
+})
 
 </script>
 

@@ -19,13 +19,15 @@ class Posts extends Model
         'user_id'
     ];
 
-    public $appends = ['countComments' , 'countLikes'];
+    public $appends = ['countComments', 'countLikes'];
 
-    public function getCountCommentsAttribute(){
+    public function getCountCommentsAttribute()
+    {
         return $this->comments->count();
     }
 
-    public function getCountLikesAttribute(){
+    public function getCountLikesAttribute()
+    {
         return $this->likes->count();
     }
 
@@ -65,6 +67,21 @@ class Posts extends Model
             'comments',
             'likes'
         ])->find($post->id);
+    }
+
+    public static function getPosts($id)
+    {
+        return (new static)::with([
+            'user',
+            'comments' => function ($query) {
+                $query->with('user:id,name,nick_name,profile_photo_path');
+            },
+            'likes'
+        ])
+            ->where('user_id' , $id)
+            ->orWhereIn('user_id' , Followers::select('user_id')->where('follower_id' , $id)->get())
+            ->orderBy('created_at' , 'desc')
+            ->get();
     }
 
 

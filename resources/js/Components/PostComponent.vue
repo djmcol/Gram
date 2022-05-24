@@ -1,7 +1,4 @@
 <template>
-    <!-- component -->
-    <!-- This is an example component -->
-
     <div
         class="bg-white max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl rounded overflow-hidden shadow-none mb-10 sm:rounded-lg max-w-2xl border border-gray-300">
         <header class="flex flex-start">
@@ -9,19 +6,19 @@
                 <a href="#"
                    class="cursor-pointer m-4 flex items-center text-sm outline-none focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
                     <img
-                        src="https://images.pexels.com/photos/3460478/pexels-photo-3460478.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                        class="h-9 w-9 rounded-full object-cover"
-                        alt="usuario"/>
+                        :src="post.user.profile_photo_url"
+                        class="h-8 w-8 rounded-full object-cover"
+                        :alt="post.user.name"/>
                     <div>
-                        <p class="block ml-2 font-bold">Clark J</p>
-                        <span class="block ml-2 text-xs text-gray-600">5 minutes</span>
+                        <p class="block ml-2 font-bold">{{ post.user.nick_name }}</p>
+                        <span class="block ml-2 text-xs text-gray-600">{{ getDifferenceTime(post.created_at) }}</span>
                     </div>
                 </a>
             </div>
         </header>
         <img class="w-full max-w-full min-w-full"
-             src="https://images.pexels.com/photos/5797991/pexels-photo-5797991.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
-             alt="post">
+             :src="post.image_path"
+             :alt="post.description">
 
         <div class="px-6 pt-4">
             <div class="mb-2">
@@ -41,34 +38,24 @@
                         </svg>
                     </span>
                 </div>
-                <span class="text-gray-600 text-sm font-bold">1,300 Likes</span>
+                <span class="text-gray-600 text-sm font-bold">{{ post.countLikes }} Likes</span>
             </div>
             <div class="">
-                <div class="text-sm mb-2 flex flex-start items-center">
-                    <a href="#"
-                       class="cursor-pointer flex items-center text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
-                        <img class="h-8 w-8 rounded-full object-cover"
-                             src="https://images.pexels.com/photos/3460478/pexels-photo-3460478.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                             alt="usuario"/>
-                    </a>
-                    <p class="font-bold ml-2">
-                        <a class="cursor-pointer">Carlos:</a>
-                        <span class="text-gray-700 font-medium ml-1">
-                            New post, I like plants
-                        </span>
-                    </p>
-                </div>
-                <a class="text-gray-400 text-sm cursor-pointer font-semibold">23 comments</a>
+                <Comments :comment="post.description" :nickName="post.user.nick_name" :urlImage="post.user.profile_photo_url"></Comments>
+                <a class="text-gray-400 text-sm cursor-pointer font-semibold">{{ post.countComments }} comments</a>
             </div>
 
         </div>
 
         <div class="px-6 pt-4 pb-3">
             <div class="flex items-start">
-                <input class="w-full resize-none outline-none appearance-none" aria-label="Agrega un comentario..."
+                <input v-model="data.textComment" class="w-full resize-none outline-none appearance-none"
+                       aria-label="Agrega un comentario..."
                        placeholder="Agrega un comentario..." autocomplete="off" autocorrect="off"
                        style="height: 36px;"/>
-                <button class="mb-2 focus:outline-none border-none bg-transparent text-blue-600">Publicar</button>
+                <button v-if="data.textComment.length > 0"
+                        class="mb-2 focus:outline-none border-none bg-transparent text-blue-600">Publicar
+                </button>
             </div>
         </div>
     </div>
@@ -76,10 +63,19 @@
 
 <script setup>
 import {reactive} from "vue";
+import Comments from "./Comments";
+import moment from 'moment'
 
-const data = reactive({})
+const data = reactive({
+    textComment: ''
+})
 
 defineProps({
-    post: ''
+    post: '',
 })
+
+let getDifferenceTime = (date) => {
+    return moment(date).toNow(true)
+}
+
 </script>
