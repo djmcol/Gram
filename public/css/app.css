@@ -1182,11 +1182,11 @@ select {
 .w-40 {
   width: 10rem;
 }
-.w-9 {
-  width: 2.25rem;
-}
 .w-7 {
   width: 1.75rem;
+}
+.w-9 {
+  width: 2.25rem;
 }
 .min-w-0 {
   min-width: 0px;
@@ -1893,6 +1893,9 @@ select {
 .hover\:bg-blue-600:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity));
+}
+.hover\:fill-current:hover {
+  fill: currentColor;
 }
 .hover\:text-gray-500:hover {
   --tw-text-opacity: 1;

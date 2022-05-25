@@ -43,7 +43,7 @@ class Posts extends Model
 
     public function likes()
     {
-        return $this->hasMany(Comments::class, 'post_id');
+        return $this->hasMany(Likes::class, 'post_id');
     }
 
     public static function createPost($request)

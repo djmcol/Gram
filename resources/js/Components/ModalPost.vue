@@ -38,14 +38,17 @@
                         <div class="pt-4">
                             <div class="mb-2">
                                 <div class="flex items-center">
-                            <span class="mr-3 inline-flex items-center cursor-pointer">
-                                <svg class="fill-heart text-gray-700 inline-block h-7 w-7 heart"
-                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                </svg>
-                            </span>
+
+                                    <span @click="likeDisLike" class="mr-3 inline-flex items-center cursor-pointer">
+                        <svg class="text-red-500 inline-block h-7 w-7"
+                             :class="[post.likes.find(like => like.user_id ===$page.props.user.id) ? 'fill-current' : 'hover:fill-current']"
+                             xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                    </span>
+
                                     <span class="mr-3 inline-flex items-center cursor-pointer">
                                 <svg class="text-gray-700 inline-block h-7 w-7 " xmlns="http://www.w3.org/2000/svg"
                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,7 +59,9 @@
                                 </div>
                                 <span class="text-gray-600 text-sm font-bold">{{ post.countLikes }} Likes</span>
                             </div>
-                            <span class="block ml-2 text-xs text-gray-600">{{ getDifferenceTime(post.created_at) }}</span>
+                            <span class="block ml-2 text-xs text-gray-600">{{
+                                    getDifferenceTime(post.created_at)
+                                }}</span>
                         </div>
 
                         <div class="pt-4 pb-1 pr-3">
@@ -83,7 +88,7 @@ import Modal from '@/Jetstream/Modal'
 import moment from 'moment'
 import {reactive} from "vue";
 
-defineProps({
+const props = defineProps({
     post: '',
     show: false
 })
@@ -100,6 +105,21 @@ let showModalPost = () => {
 
 let getDifferenceTime = (date) => {
     return moment(date).toNow(true)
+}
+
+let likeDisLike = async () => {
+    const URL = `/like-post`
+    const RPT = (await axios.post(URL, {post_id: props.post.id})).data
+    props.post.likes = RPT.likes
+    console.log(RPT.likes)
+    if (RPT.likes.length > 0) {
+        console.log('Increment')
+        props.post.countLikes++
+    } else {
+        console.log('Decrement')
+        props.post.countLikes--
+    }
+
 }
 
 </script>

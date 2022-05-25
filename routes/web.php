@@ -38,5 +38,6 @@ Route::middleware([
     Route::post('/create-post', [PostController::class , 'createPost'])->name('create-post');
     // Listar publicaciones
     Route::get('/list-post', [PostController::class , 'getPosts'])->name('list-post');
+    Route::post('/like-post', [PostController::class , 'likeOrDiskLike'])->name('like-post');
 
 });

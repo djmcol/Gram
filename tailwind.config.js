@@ -17,5 +17,12 @@ module.exports = {
         },
     },
 
+    variants : {
+        extend: {
+            opacity: ['disabled'],
+            fill: ['hover' , 'focus']
+        }
+    },
+
     plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 };
