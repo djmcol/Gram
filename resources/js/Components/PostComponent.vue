@@ -57,6 +57,7 @@
                        placeholder="Agrega un comentario..." autocomplete="off" autocorrect="off"
                        style="height: 36px;"/>
                 <button v-if="data.textComment.length > 0"
+                        @click="comment($page.props.user.id)"
                         class="mb-2 focus:outline-none border-none bg-transparent text-blue-600">Publicar
                 </button>
             </div>
@@ -99,6 +100,22 @@ let likeDisLike = async () => {
         console.log('Decrement')
         props.post.countLikes--
     }
+
+}
+
+let comment = async (userId) => {
+    const URL = `/comment`
+
+    const RPT = (await axios.post(URL, {
+        post_id: props.post.id,
+        user_id: userId,
+        comment: data.textComment
+    })).data
+
+    props.post.comments.push(RPT)
+    props.post.countComments++
+    data.textComment = ''
+
 
 }
 

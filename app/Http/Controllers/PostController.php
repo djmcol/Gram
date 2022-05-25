@@ -59,4 +59,16 @@ class PostController extends Controller
             return response()->json($e->getMessage(), 500);
         }
     }
+
+    public function comment(Request $request)
+    {
+        try {
+           $comment =  $this->comments->create($request->all());
+
+           return $this->comments->with('user:id,name,nick_name,profile_photo_path')->where('id' , $comment->id )->first();
+
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
+        }
+    }
 }

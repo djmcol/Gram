@@ -22,7 +22,7 @@
                     </header>
 
                     <div>
-                        <div>
+                        <div class="scroll" ref="scrollComments">
                             <div class="pt-1">
                                 <Comments :comment="post.description" :nickName="post.user.nick_name"
                                           :urlImage="post.user.profile_photo_url"></Comments>
@@ -66,10 +66,12 @@
 
                         <div class="pt-4 pb-1 pr-3">
                             <div class="flex items-start">
-                                <input v-model="data.text" class="w-full resize-none outline-none appearance-none"
+                                <input v-model="data.textComment"
+                                       class="w-full resize-none outline-none appearance-none"
                                        aria-label="Agrega un comentario..." placeholder="Agrega un comentario..."
                                        autocomplete="off" autocorrect="off" style="height: 36px;"/>
-                                <button v-if="data.text.length > 0"
+                                <button v-if="data.textComment.length > 0"
+                                        @click="comment($page.props.user.id)"
                                         class="mb-2 focus:outline-none border-none bg-transparent text-blue-600">
                                     Publicar
                                 </button>
@@ -86,7 +88,7 @@
 import Comments from "./Comments";
 import Modal from '@/Jetstream/Modal'
 import moment from 'moment'
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 
 const props = defineProps({
     post: '',
@@ -96,8 +98,10 @@ const props = defineProps({
 const emit = defineEmits(['show'])
 
 const data = reactive({
-    text: ''
+    textComment: ''
 })
+
+const scrollComments = ref(null)
 
 let showModalPost = () => {
     emit('show')
@@ -122,4 +126,51 @@ let likeDisLike = async () => {
 
 }
 
+let comment = async (userId) => {
+    const URL = `/comment`
+
+    const RPT = (await axios.post(URL, {
+        post_id: props.post.id,
+        user_id: userId,
+        comment: data.textComment
+    })).data
+
+    props.post.comments.push(RPT)
+    props.post.countComments++
+    data.textComment = ''
+    scrollBottom()
+
+
+}
+
+let scrollBottom = () => {
+    setTimeout(() => {
+        scrollComments.value.scrollTop = scrollComments.value.scrollHeight - scrollComments.value.clientHeight
+    }, 50)
+}
+
 </script>
+
+<style>
+
+.scroll {
+    height: 185px;
+    overflow-y: auto;
+}
+
+.scroll::-webkit-scrollbar {
+    width: 12px;
+}
+
+.scroll::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+
+</style>

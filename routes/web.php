@@ -40,4 +40,6 @@ Route::middleware([
     Route::get('/list-post', [PostController::class , 'getPosts'])->name('list-post');
     Route::post('/like-post', [PostController::class , 'likeOrDiskLike'])->name('like-post');
 
+    Route::post('/comment', [PostController::class , 'comment'])->name('comment');
+
 });
