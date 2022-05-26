@@ -50,7 +50,8 @@
                                            v-for="item in data.Users"
                                            :href="'/profile/'+item.nick_name"
                                        class="block flex items-center py-2 px-3 hover:bg-gray-100">
-                                        <img class="rounded-full w-9 h-9 object-cover" :src="item.profile_photo_path"
+                                        <img class="rounded-full w-9 h-9 object-cover"
+                                             :src="item.profile_photo_url"
                                              :alt="item.nick_name">
                                         <div class="ml-2">
                                             <span

@@ -24998,7 +24998,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
             return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
               "class": "rounded-full w-9 h-9 object-cover",
-              src: item.profile_photo_path,
+              src: item.profile_photo_url,
               alt: item.nick_name
             }, null, 8
             /* PROPS */
@@ -27965,8 +27965,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     id: "post-profile",
     "class": "cursor-pointer relative",
     style: {
-      "width": "300px",
-      "height": "300px"
+      "width": "250px",
+      "height": "250px"
     }
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     src: $props.posts.image_path,

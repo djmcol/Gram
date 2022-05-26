@@ -3,7 +3,7 @@
         @click="changeStateSetPost"
         id="post-profile"
         class="cursor-pointer relative"
-        style="width:300px; height:300px">
+        style="width:250px; height:250px">
         <img
             :src="posts.image_path"
             class="foto w-full h-full object-cover"
