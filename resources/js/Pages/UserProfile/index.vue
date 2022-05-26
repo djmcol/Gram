@@ -4,16 +4,16 @@
         <div class="w-7/12">
             <div class="flex justify-center pb-10">
                 <img
-                    :src="props.user.profile_photo_url"
+                    :src="props.userProfile.profile_photo_url"
                     class="h-40 w-40 rounded-full object-cover"
                     alt="username"/>
                 <div class="ml-10">
                     <div class="flex items-center">
                         <h2 class="block leading-relaxed font-light text-gray-700 text-3xl">
-                            {{ props.user.nick_name }}</h2>
+                            {{ props.userProfile.nick_name }}</h2>
                         <a class="cursor-pointer h-7 px-3 ml-3 outline-none border-transparent text-center rounded border bg-blue-500 hover:bg-blue-600 text-white bg-transparent font-semibold">Enviar
                             mensaje</a>
-                        <a class="cursor-pointer h-7 px-3 ml-3 focus:outline-none hover:border-transparent text-center rounded border border-gray-400 hover:bg-blue-500 hover:text-white bg-transparent text-gray-500 font-semibold">Editar</a>
+                        <Link v-if="props.userProfile.id === $page.props.user.id" href="/user/profile" class="cursor-pointer h-7 px-3 ml-3 focus:outline-none hover:border-transparent text-center rounded border border-gray-400 hover:bg-blue-500 hover:text-white bg-transparent text-gray-500 font-semibold">Editar</Link>
 
                         <button
                             class="flex items-center ml-3 border border-blue-600 hover:bg-blue-600 hover:text-white rounded outline-none focus:outline-none bg-transparent text-blue-600 text-sm py-1 px-2">
@@ -50,23 +50,23 @@
                     </ul>
                     <br>
                     <div class="">
-                        <h1 class="text-base font-bold font-light">{{ props.user.name }}</h1>
-                        <span class="text-base">{{ props.user.presentation }}</span>
-                        <!--                        <a :href="props.user.web_site" class="block text-base text-blue-500 mt-2"
-                                                   target="_blank">{{props.user.web_site}}</a>-->
+                        <h1 class="text-base font-bold font-light">{{ props.userProfile.name }}</h1>
+                        <span class="text-base">{{ props.userProfile.presentation }}</span>
+                        <!--                        <a :href="props.userProfile.web_site" class="block text-base text-blue-500 mt-2"
+                                                   target="_blank">{{props.userProfile.web_site}}</a>-->
                     </div>
                 </div>
             </div>
             <div class="border-b border-gray-300"></div>
             <article v-if="props.posts.length > 0" class="mt-5 grid grid-cols-3 gap-10">
-
-                <imagePost v-for="(item , index) in props.posts" :key="index" :posts="item"></imagePost>
-
+                <imagePost v-for="(item , index) in props.posts" :key="index" :posts="item" @show="changeStateModalPost"></imagePost>
             </article>
 
-            <div v-else class="w-full text-center text-3xl pt-10">
-                No hay publicaciones
-            </div>
+            <div v-else class="w-full text-center text-3xl pt-10"> No hay publicaciones</div>
+
+            <ModalPost :show="data.show" :post="data.posts" @show="changeState"></ModalPost>
+
+
         </div>
 
     </AppLayout>
@@ -74,16 +74,32 @@
 
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import ModalPost from '@/Components/ModalPost'
 import imagePost from '@/Pages/UserProfile/imagePost';
 import {Head, Link} from '@inertiajs/inertia-vue3';
+import {reactive} from "vue";
 
 let props = defineProps({
-    user: '',
+    userProfile: '',
     followers: '',
     followed: '',
     postsCount: '',
     posts: '',
 })
+
+let data = reactive({
+    show: false,
+    posts : []
+})
+
+let changeStateModalPost = (post) =>{
+    data.posts = post
+    data.show = !data.show
+}
+
+let changeState = () =>{
+    data.show = !data.show
+}
 
 </script>
 

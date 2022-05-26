@@ -1,5 +1,7 @@
 <template>
-    <div id="post-profile"
+    <div
+        @click="changeStateSetPost"
+        id="post-profile"
         class="cursor-pointer relative"
         style="width:300px; height:300px">
         <img
@@ -31,16 +33,25 @@
 </template>
 
 <script setup>
+
 let props = defineProps({
-    posts : ''
+    posts: ''
 })
+
+const emit = defineEmits(['show'])
+
+
+let changeStateSetPost = () => {
+    console.log(props.posts)
+    emit('show', props.posts)
+}
 
 </script>
 
 <style>
-#hover-post{
+#hover-post {
     display: none;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 #post-profile:hover #hover-post {
