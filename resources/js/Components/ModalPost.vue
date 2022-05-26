@@ -11,14 +11,14 @@
 
                 <div class="col-span-1 relative pl-4">
                     <header class="border-b border-grey-400">
-                        <a href="#"
+                        <Link :href="'/profile/'+post.user.nick_name"
                            class="block cursor-pointer py-4 flex items-center text-sm outline-none focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
                             <img
                                 :src="post.user.profile_photo_url"
                                 class="h-8 w-8 rounded-full object-cover"
                                 :alt="post.user.nick_name"/>
                             <p class="block ml-2 font-bold">{{ post.user.nick_name }}</p>
-                        </a>
+                        </Link>
                     </header>
 
                     <div>
@@ -87,6 +87,7 @@
 <script setup>
 import Comments from "./Comments";
 import Modal from '@/Jetstream/Modal'
+import {Head, Link} from '@inertiajs/inertia-vue3';
 import moment from 'moment'
 import {reactive, ref} from "vue";
 

@@ -46,7 +46,9 @@
                                 </template>
 
                                 <template #content>
-                                    <a v-if="data.Users.length > 0" v-for="item in data.Users" href=""
+                                    <Link  v-if="data.Users.length > 0"
+                                           v-for="item in data.Users"
+                                           :href="'/profile/'+item.nick_name"
                                        class="block flex items-center py-2 px-3 hover:bg-gray-100">
                                         <img class="rounded-full w-9 h-9 object-cover" :src="item.profile_photo_path"
                                              :alt="item.nick_name">
@@ -58,7 +60,7 @@
                                             <span
                                                 class="font-ligth text-gray-400 text-sm">{{ item.name }}</span>
                                         </div>
-                                    </a>
+                                    </Link>
 
                                     <div v-if="form.search == ''" class="py-2 px-3 flex items-center">
                                         <span class="text-sm font-light text-gray-400">Busca a tus amigos...</span>
@@ -153,39 +155,20 @@
                             <div class="ml-3 relative">
                                 <JetDropdown align="right" width="48">
                                     <template #trigger>
-                                        <button v-if="$page.props.jetstream.managesProfilePhotos"
-                                                class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                        <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                                             <img class="h-8 w-8 rounded-full object-cover"
                                                  :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name">
                                         </button>
-
-                                        <span v-else class="inline-flex rounded-md">
-                                            <button type="button"
-                                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
-                                                {{ $page.props.user.name }}
-
-                                                <svg
-                                                    class="ml-2 -mr-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path fill-rule="evenodd"
-                                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                          clip-rule="evenodd"/>
-                                                </svg>
-                                            </button>
-                                        </span>
                                     </template>
 
                                     <template #content>
-                                        <!-- Account Management -->
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Manage Account
-                                        </div>
 
-                                        <JetDropdownLink :href="route('profile.show')">
-                                            Profile
+                                        <JetDropdownLink :href="'/profile/'+$page.props.user.nick_name">
+                                            Perfil
+                                        </JetDropdownLink>
+
+                                       <JetDropdownLink :href="route('profile.show')">
+                                            Configuración
                                         </JetDropdownLink>
 
                                         <JetDropdownLink v-if="$page.props.jetstream.hasApiFeatures"
@@ -267,7 +250,7 @@
                         <div class="mt-3 space-y-1">
                             <JetResponsiveNavLink :href="route('profile.show')"
                                                   :active="route().current('profile.show')">
-                                Profile
+                                Configuración
                             </JetResponsiveNavLink>
 
                             <JetResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures"

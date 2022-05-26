@@ -3,7 +3,7 @@
         class="bg-white max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl rounded overflow-hidden shadow-none mb-10 sm:rounded-lg max-w-2xl border border-gray-300">
         <header class="flex flex-start">
             <div>
-                <a href="#"
+                <Link :href="'/profile/'+post.user.nick_name"
                    class="cursor-pointer m-4 flex items-center text-sm outline-none focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
                     <img
                         :src="post.user.profile_photo_url"
@@ -13,7 +13,7 @@
                         <p class="block ml-2 font-bold">{{ post.user.nick_name }}</p>
                         <span class="block ml-2 text-xs text-gray-600">{{ getDifferenceTime(post.created_at) }}</span>
                     </div>
-                </a>
+                </Link>
             </div>
         </header>
         <img class="w-full max-w-full min-w-full"
@@ -67,6 +67,7 @@
 
 <script setup>
 import {reactive} from "vue";
+import {Head, Link} from '@inertiajs/inertia-vue3';
 import Comments from "./Comments";
 import moment from 'moment'
 

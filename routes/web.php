@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Redirect;
@@ -41,5 +42,8 @@ Route::middleware([
     Route::post('/like-post', [PostController::class , 'likeOrDiskLike'])->name('like-post');
 
     Route::post('/comment', [PostController::class , 'comment'])->name('comment');
+
+    //Profile
+    Route::get('/profile/{nick_name}', [ProfileController::class , 'index'])->name('profile');
 
 });
