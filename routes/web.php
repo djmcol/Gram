@@ -46,4 +46,11 @@ Route::middleware([
     //Profile
     Route::get('/profile/{nick_name}', [ProfileController::class , 'index'])->name('profile');
 
+    //Follow
+    Route::post('/follow-user', [ProfileController::class , 'followUser'])->name('follow-user');
+    Route::post('/unfollow-user', [ProfileController::class , 'unFollow'])->name('unfollow-user');
+    Route::get('/exists-follow/{user_id}', [ProfileController::class , 'existsFollow'])->name('exists-follow');
+
+
+
 });

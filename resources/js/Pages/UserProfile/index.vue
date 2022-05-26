@@ -13,17 +13,38 @@
                             {{ props.userProfile.nick_name }}</h2>
                         <a class="cursor-pointer h-7 px-3 ml-3 outline-none border-transparent text-center rounded border bg-blue-500 hover:bg-blue-600 text-white bg-transparent font-semibold">Enviar
                             mensaje</a>
-                        <Link v-if="props.userProfile.id === $page.props.user.id" href="/user/profile" class="cursor-pointer h-7 px-3 ml-3 focus:outline-none hover:border-transparent text-center rounded border border-gray-400 hover:bg-blue-500 hover:text-white bg-transparent text-gray-500 font-semibold">Editar</Link>
 
-                        <button
-                            class="flex items-center ml-3 border border-blue-600 hover:bg-blue-600 hover:text-white rounded outline-none focus:outline-none bg-transparent text-blue-600 text-sm py-1 px-2">
-                            <span class="block">Seguir</span>
-                            <svg class="block h-5 w-5 pl-1" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                 viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M5 13l4 4L19 7"/>
-                            </svg>
-                        </button>
+                        <template v-if="props.userProfile.id != $page.props.user.id">
+                            <Link v-if="props.userProfile.id === $page.props.user.id" href="/user/profile"
+                                  class="cursor-pointer h-7 px-3 ml-3 focus:outline-none hover:border-transparent text-center rounded border border-gray-400 hover:bg-blue-500 hover:text-white bg-transparent text-gray-500 font-semibold">
+                                Editar
+                            </Link>
+
+                            <button
+                                v-if="!data.existsState"
+                                @click="follow"
+                                class="flex items-center ml-3 border border-blue-600 hover:bg-blue-600 hover:text-white rounded outline-none focus:outline-none bg-transparent text-blue-600 text-sm py-1 px-2">
+                                <span class="block">Seguir</span>
+                                <svg class="block h-5 w-5 pl-1" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                     viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </button>
+
+                            <button
+                                v-else
+                                @click="unFollow"
+                                class="flex items-center ml-3 border border-blue-600 hover:bg-blue-600 hover:text-white rounded outline-none focus:outline-none bg-transparent text-blue-600 text-sm py-1 px-2">
+                                <span class="block">Dejar de seguir</span>
+                                <svg class="block h-5 w-5 pl-1" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                     viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </button>
+                        </template>
+
                         <a class="cursor-pointer ml-2 p-1 border-transparent text-gray-700 rounded-full hover:text-blue-600 focus:outline-none focus:text-gray-600"
                            aria-label="Notifications">
                             <svg class="h-8 w-8" fill="none" stroke-linecap="round" stroke-linejoin="round"
@@ -59,7 +80,8 @@
             </div>
             <div class="border-b border-gray-300"></div>
             <article v-if="props.posts.length > 0" class="mt-5 grid grid-cols-3 gap-10">
-                <imagePost v-for="(item , index) in props.posts" :key="index" :posts="item" @show="changeStateModalPost"></imagePost>
+                <imagePost v-for="(item , index) in props.posts" :key="index" :posts="item"
+                           @show="changeStateModalPost"></imagePost>
             </article>
 
             <div v-else class="w-full text-center text-3xl pt-10"> No hay publicaciones</div>
@@ -77,7 +99,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import ModalPost from '@/Components/ModalPost'
 import imagePost from '@/Pages/UserProfile/imagePost';
 import {Head, Link} from '@inertiajs/inertia-vue3';
-import {reactive} from "vue";
+import {onMounted, reactive} from "vue";
 
 let props = defineProps({
     userProfile: '',
@@ -89,17 +111,43 @@ let props = defineProps({
 
 let data = reactive({
     show: false,
-    posts : []
+    posts: [],
+    existsState: false
 })
 
-let changeStateModalPost = (post) =>{
+let changeStateModalPost = (post) => {
     data.posts = post
     data.show = !data.show
 }
 
-let changeState = () =>{
+let changeState = () => {
     data.show = !data.show
 }
+
+let follow = async () => {
+    const URL = `/follow-user`
+    const RPT = (await axios.post(URL , {user_id : props.userProfile.id})).data
+    data.existsState = !data.existsState
+    console.log(RPT)
+
+}
+
+let unFollow = async () => {
+    const URL = `/unfollow-user`
+    const RPT = (await axios.post(URL , {user_id : props.userProfile.id})).data
+    data.existsState = !data.existsState
+    console.log(RPT)
+}
+
+let existsFollow = async () => {
+    const URL = `/exists-follow/${props.userProfile.id}`
+    const RPT = (await axios.get(URL)).data
+    if (RPT.exists) data.existsState = !data.existsState
+}
+
+onMounted(() => {
+    existsFollow()
+})
 
 </script>
 

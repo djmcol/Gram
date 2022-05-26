@@ -1080,11 +1080,11 @@ select {
 .mb-5 {
   margin-bottom: 1.25rem;
 }
-.ml-10 {
-  margin-left: 2.5rem;
-}
 .ml-5 {
   margin-left: 1.25rem;
+}
+.ml-10 {
+  margin-left: 2.5rem;
 }
 .block {
   display: block;
@@ -1137,11 +1137,11 @@ select {
 .h-7 {
   height: 1.75rem;
 }
-.h-40 {
-  height: 10rem;
-}
 .h-full {
   height: 100%;
+}
+.h-40 {
+  height: 10rem;
 }
 .min-h-screen {
   min-height: 100vh;
