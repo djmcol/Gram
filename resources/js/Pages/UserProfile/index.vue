@@ -9,7 +9,8 @@
                     alt="username"/>
                 <div class="ml-10">
                     <div class="flex items-center">
-                        <h2 class="block leading-relaxed font-light text-gray-700 text-3xl">{{props.user.nick_name}}</h2>
+                        <h2 class="block leading-relaxed font-light text-gray-700 text-3xl">
+                            {{ props.user.nick_name }}</h2>
                         <a class="cursor-pointer h-7 px-3 ml-3 outline-none border-transparent text-center rounded border bg-blue-500 hover:bg-blue-600 text-white bg-transparent font-semibold">Enviar
                             mensaje</a>
                         <a class="cursor-pointer h-7 px-3 ml-3 focus:outline-none hover:border-transparent text-center rounded border border-gray-400 hover:bg-blue-500 hover:text-white bg-transparent text-gray-500 font-semibold">Editar</a>
@@ -35,47 +36,37 @@
                     </div>
                     <ul class="flex justify-content-around items-center">
                         <li>
-                            <span class="block text-base flex"><span class="font-bold mr-2">{{props.posts}} </span> Posts</span>
+                            <span class="block text-base flex"><span
+                                class="font-bold mr-2">{{ props.postsCount }} </span> Posts</span>
                         </li>
                         <li>
                             <span class="cursor-pointer block text-base flex ml-5"><span
-                                class="font-bold mr-2">{{props.followers}} </span> Seguidores</span>
+                                class="font-bold mr-2">{{ props.followers }} </span> Seguidores</span>
                         </li>
                         <li>
                             <span class="cursor-pointer block text-base flex ml-5"><span
-                                class="font-bold mr-2">{{props.followed}} </span> Seguidos</span>
+                                class="font-bold mr-2">{{ props.followed }} </span> Seguidos</span>
                         </li>
                     </ul>
                     <br>
                     <div class="">
-                        <h1 class="text-base font-bold font-light">{{props.user.name}}</h1>
-                        <span class="text-base">{{props.user.presentation}}</span>
-<!--                        <a :href="props.user.web_site" class="block text-base text-blue-500 mt-2"
-                           target="_blank">{{props.user.web_site}}</a>-->
+                        <h1 class="text-base font-bold font-light">{{ props.user.name }}</h1>
+                        <span class="text-base">{{ props.user.presentation }}</span>
+                        <!--                        <a :href="props.user.web_site" class="block text-base text-blue-500 mt-2"
+                                                   target="_blank">{{props.user.web_site}}</a>-->
                     </div>
                 </div>
             </div>
             <div class="border-b border-gray-300"></div>
-            <article class="mt-5 grid grid-cols-3 gap-10">
-                <div class="cursor-pointer relative" style="width:300px; height:300px">
-                    <img
-                        src="https://images.pexels.com/photos/247431/pexels-photo-247431.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
-                        class="foto w-full h-full object-cover"
-                        alt="description"/>
-                </div>
-                <div class="cursor-pointer relative" style="width:300px; height:300px">
-                    <img
-                        src="https://images.pexels.com/photos/258109/pexels-photo-258109.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
-                        class="foto w-full h-full object-cover"
-                        alt="description"/>
-                </div>
-                <div class="cursor-pointer relative" style="width:300px; height:300px">
-                    <img
-                        src="https://images.pexels.com/photos/248771/pexels-photo-248771.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
-                        class="foto w-full h-full object-cover"
-                        alt="description"/>
-                </div>
+            <article v-if="props.posts.length > 0" class="mt-5 grid grid-cols-3 gap-10">
+
+                <imagePost v-for="(item , index) in props.posts" :key="index" :posts="item"></imagePost>
+
             </article>
+
+            <div v-else class="w-full text-center text-3xl pt-10">
+                No hay publicaciones
+            </div>
         </div>
 
     </AppLayout>
@@ -83,13 +74,17 @@
 
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import imagePost from '@/Pages/UserProfile/imagePost';
 import {Head, Link} from '@inertiajs/inertia-vue3';
 
 let props = defineProps({
-    user : '',
-    followers : '',
-    followed : '',
-    posts : '',
+    user: '',
+    followers: '',
+    followed: '',
+    postsCount: '',
+    posts: '',
 })
 
 </script>
+
+

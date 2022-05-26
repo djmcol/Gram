@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Followers;
+use App\Models\Posts;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -28,13 +29,16 @@ class ProfileController extends Controller
 
         $followers = $user->followers()->count();
         $followed = $this->followers->where('follower_id' , $user->id)->count();
-        $posts = $user->posts()->count();
+        $postsCount = $user->posts()->count();
+        $post = Posts::getPosts($user->id , true);
 
         return Inertia::render('UserProfile/index' , [
             'user' => $user,
             'followers' => $followers,
             'followed' => $followed,
-            'posts' => $posts
+            'postsCount' => $postsCount,
+            'posts' => $post,
+
         ]);
     }
 
